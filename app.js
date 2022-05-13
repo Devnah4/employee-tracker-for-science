@@ -21,6 +21,9 @@ function startScreen() {
 }
 
 // View all the departments
+function viewDeapartments() {
+    
+}
 
 // View all the roles
 
