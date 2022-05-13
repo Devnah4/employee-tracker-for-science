@@ -1,6 +1,7 @@
 const express = require("express");
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+const db = require("./config/connections");
 
 // Start Screen
 function startScreen() {
@@ -57,7 +58,19 @@ function startScreen() {
 }
 
 // View all the departments
-function viewDepartments() {}
+function viewDepartments() {
+    const sql = `SELECT * FROM department`;
+    db.query(sql, (err, rows) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: "success",
+        data: rows,
+      });
+    });
+}
 
 // View all the roles
 
@@ -70,3 +83,5 @@ function viewDepartments() {}
 // Add an employee
 
 // Update an Employee
+
+startScreen();
