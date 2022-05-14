@@ -22,14 +22,14 @@ function startScreen() {
       ],
     })
     // Starts all of the functions to view and edit data
-    .then(function ({ initial }) {
-      switch (initial) {
+    .then(function ({ start }) {
+      switch (start) {
         case "View all Departments":
           viewDepartments();
           break;
 
         case "View all Roles":
-          viewRoles();
+          viewRole();
           break;
 
         case "View all Employees":
@@ -59,25 +59,77 @@ function startScreen() {
 
 // View all the departments
 function viewDepartments() {
-    const sql = `SELECT * FROM department`;
-    db.query(sql, (err, rows) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-        return;
-      }
-      res.json({
-        message: "success",
-        data: rows,
-      });
-    });
+  const sql = `SELECT * FROM department`;
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    console.table(res);
+    inquirer.prompt({
+      type: 'confirm',
+      name: 'done',
+      message: 'Are you done?',
+      default: 'true'
+    })
+      .then((done) => {
+        startScreen();
+      })
+  });
 }
 
+
 // View all the roles
+function viewRole() {
+  const sql = `SELECT * FROM role`;
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    console.table(res);
+    inquirer.prompt({
+      type: 'confirm',
+      name: 'done',
+      message: 'Are you done?',
+      default: 'true'
+    })
+      .then((done) => {
+        startScreen();
+      })
+  });
+}
 
 // View all the Employees
+function viewEmployee() {
+  const sql = `SELECT * FROM employee`;
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.log(err.message);
+      return;
+    }
+    console.table(res);
+    inquirer.prompt({
+      type: 'confirm',
+      name: 'done',
+      message: 'Are you done?',
+      default: 'true'
+    })
+      .then((done) => {
+        startScreen();
+      })
+  });
+}
 
 // Add a Department
-
+function addDepartment() {
+  inquirer.prompt({
+    type: 'input',
+    name: 'name',
+    message: "What is the name of the department you'd like to add?"
+  })
+  const sql = `INSERT INTO department `
+}
 // Add a Role
 
 // Add an employee
