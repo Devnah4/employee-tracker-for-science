@@ -312,7 +312,7 @@ function updateEmployee() {
       {
         type: "input",
         name: "first_name",
-        message: "What is the first name of the Employee you'd like to update?",
+        message: "Please enter the new first Name.",
         validate: (nameInput) => {
           if (nameInput) {
             return true;
@@ -325,7 +325,7 @@ function updateEmployee() {
       {
         type: "input",
         name: "last_name",
-        message: "What is the last name of the Employee you'd like to update?",
+        message: "Please enter the new Last Name.",
         validate: (nameInput) => {
           if (nameInput) {
             return true;
@@ -338,7 +338,7 @@ function updateEmployee() {
       {
         type: "input",
         name: "role_id",
-        message: "What is the role id of the Employee you'd like to update?",
+        message: "What is the id for their role?",
         validate: (nameInput) => {
           if (nameInput) {
             return true;
@@ -351,22 +351,16 @@ function updateEmployee() {
       {
         type: "input",
         name: "manager_id",
-        message: "What is the manager id of the Employee you'd like to update?",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please Enter a Manager ID!");
-            return false;
-          }
-        },
+        message: "What is the id for their manager?",
+        default: '0',
       },
     ])
     .then((employee) => {
-      const sql = `UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, manager_id = ? WHERE employee_id = ?`;
+      const sql = `UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, manager_id = ? WHERE id = ?`;
       db.query(
         sql,
         [
+          employee.id,
           employee.first_name,
           employee.last_name,
           employee.role_id,
@@ -377,9 +371,7 @@ function updateEmployee() {
             console.log(err.message);
             return;
           }
-          console.log(
-            `${employee.first_name} ${employee.last_name} was updated in the employee table.`
-          );
+          console.log(`${employee.first_name} ${employee.last_name} was updated in the employee table.`);
           startScreen();
         }
       );
