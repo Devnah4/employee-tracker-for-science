@@ -17,7 +17,7 @@ function startScreen() {
         "Add a Department",
         "Add a Role",
         "Add an Employee",
-        "Update an Employee",
+        "Update an Employee Role",
         "Exit",
       ],
     })
@@ -48,7 +48,7 @@ function startScreen() {
           addEmployee();
           break;
 
-        case "Update an Employee":
+        case "Update an Employee Role":
           updateEmployee();
           break;
 
@@ -291,13 +291,13 @@ function addEmployee() {
     });
 }
 
-// Update an Employee
+// Update an Employee role
 function updateEmployee() {
   inquirer
     .prompt([
       {
         type: "input",
-        name: "employee_id",
+        name: "id",
         message:
           "What is the employee id of the Employee you'd like to update?",
         validate: (nameInput) => {
@@ -311,34 +311,8 @@ function updateEmployee() {
       },
       {
         type: "input",
-        name: "first_name",
-        message: "Please enter the new first Name.",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please Enter a Name!");
-            return false;
-          }
-        },
-      },
-      {
-        type: "input",
-        name: "last_name",
-        message: "Please enter the new Last Name.",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please Enter a Name!");
-            return false;
-          }
-        },
-      },
-      {
-        type: "input",
         name: "role_id",
-        message: "What is the id for their role?",
+        message: "What is the id for their new role?",
         validate: (nameInput) => {
           if (nameInput) {
             return true;
@@ -348,33 +322,22 @@ function updateEmployee() {
           }
         },
       },
-      {
-        type: "input",
-        name: "manager_id",
-        message: "What is the id for their manager?",
-        default: '0',
-      },
-    ])
-    .then((employee) => {
-      const sql = `UPDATE employee SET first_name = ?, last_name = ?, role_id = ?, manager_id = ? WHERE id = ?`;
-      db.query(
-        sql,
-        [
-          employee.id,
-          employee.first_name,
-          employee.last_name,
-          employee.role_id,
-          employee.manager_id,
-        ],
-        (err, res) => {
-          if (err) {
-            console.log(err.message);
-            return;
-          }
-          console.log(`${employee.first_name} ${employee.last_name} was updated in the employee table.`);
-          startScreen();
+    ]).then((employee) => {
+      const sql = `UPDATE employee SET role_id = ? WHERE id = ?`;
+      const params = [
+        employee.role_id,
+        employee.id,
+      ];
+      db.query(sql, params, (err, res) => {
+        if (err) {
+          console.log(err.message);
+          return;
         }
-      );
+        console.log(sql)
+        console.table(res);
+      });
+      console.log(`Employee was succesfully updated.`);
+      startScreen();
     });
 }
 
